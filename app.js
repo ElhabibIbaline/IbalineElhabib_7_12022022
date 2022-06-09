@@ -1,25 +1,12 @@
 const express = require('express');
-
-
+const userRoutes = require('./routes/user.routes');
+const bodyParser = require('body-parser');
 const app = express();
 
-app.use((req, res, next) => {
-  console.log('Requête reçue !');
-  next();
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
-
-app.use((req, res, next) => {
-  res.json({ message: 'Votre requête a bien été reçue !' });
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log('Réponse envoyée avec succès !');
-});
+// routes
+app.use('/api/user', userRoutes);
 
 module.exports = app;
