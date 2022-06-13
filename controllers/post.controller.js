@@ -2,19 +2,22 @@ const postModel = require("../models/post.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
 module.exports.readPost = (req, res) => {
-  postModel.find((err, docs) => {
-    if (!err) res.send(docs);
-    else console.log("Error to get data : " + err);
-  });
+  postModel
+    .find()
+    .populate("comments.userId")
+    .exec(function (err, docs) {
+      if (!err) res.send(docs);
+      else console.log("Error to get data : " + err);
+    });
 };
 
 module.exports.createPost = async (req, res) => {
   const newPost = new postModel({
-    posterId: req.body.posterId,
-    message: req.body.message,
+    titre: req.body.titre,
+    description: req.body.description,
     video: req.body.video,
     likers: [],
-    comments: [],
+    comments: req.body.comments,
   });
 
   try {

@@ -1,15 +1,19 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
+var user = mongoose.model("user");
 const PostSchema = new mongoose.Schema(
   {
-    posterId: {
-      type: String,
-      required: true
-    },
-    message: {
+    // posterId: {
+    //   type: String,
+    //   required: true
+    // },
+
+    titre: {
       type: String,
       trim: true,
-      maxlength: 500,
+    },
+    description: {
+      type: String,
+      trim: true,
     },
     picture: {
       type: String,
@@ -19,23 +23,18 @@ const PostSchema = new mongoose.Schema(
     },
     likers: {
       type: [String],
-      required: true,
     },
-    comments: {
-      type: [
-        {
-          commenterId:String,
-          commenterPseudo: String,
-          text: String,
-          timestamp: Number,
-        }
-      ],
-      required: true,
-    },
+    comments: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+        text: String,
+        timestamp: Number,
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model('post', PostSchema);
+module.exports = mongoose.model("post", PostSchema);
